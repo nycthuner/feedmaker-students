@@ -41,11 +41,11 @@ func (handler *LoginHandler) Handle(context *gin.Context) {
 		Password: password,
 	}
 
-	user, err := service.NewLoginService(handler.db).Execute(loginUser)
+	jwt, err := service.NewLoginService(handler.db).Execute(loginUser)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	context.JSON(http.StatusOK, user)
+	context.JSON(http.StatusOK, map[string]any{"token": jwt})
 }

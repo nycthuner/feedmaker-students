@@ -43,14 +43,14 @@ O **Feedmaker Students** é uma API REST que permite professores fornecerem feed
    ```
 
 4. **Acesse a API:**
-   - URL base: `http://localhost:8080`
-   - Health check: `http://localhost:8080/health`
+   - URL base: `http://localhost:5567`
+   - Health check: `http://localhost:5567/health`
 
 ## 📚 Documentação da API
 
 ### Base URL
 ```
-http://localhost:8080
+http://localhost:5567
 ```
 
 ---

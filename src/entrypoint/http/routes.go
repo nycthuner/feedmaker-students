@@ -46,7 +46,7 @@ func (routes *Routes) Register() {
 	)
 
 	routes.POST(
-		"login",
+		"/login",
 		routes.Handlers[Login].Handle,
 	)
 

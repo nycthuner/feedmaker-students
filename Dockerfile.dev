@@ -13,6 +13,6 @@ RUN go mod download
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 5567
 
 ENTRYPOINT ["air", "-c", ".air.toml"]
