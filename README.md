@@ -46,6 +46,65 @@ O **Feedmaker Students** é uma API REST que permite professores fornecerem feed
    - URL base: `http://localhost:5567`
    - Health check: `http://localhost:5567/health`
 
+## ⚙️ Variáveis de Ambiente
+
+O serviço usa variáveis de ambiente para configurar a conexão com o banco e a porta do servidor. Você pode copiar o arquivo de exemplo:
+
+```bash
+cp .env.example .env
+```
+
+As variáveis mais importantes são:
+
+- `DB_HOST` (ex: `db` quando usando Docker Compose)
+- `DB_PORT` (ex: `5432`)
+- `DB_USER` (ex: `admin`)
+- `DB_PASSWORD` (ex: `admin`)
+- `DB_NAME` (ex: `feedmaker_db`)
+- `DB_SSLMODE` (ex: `disable`)
+- `PORT` (porta HTTP do servidor, ex: `5567`)
+
+O `docker-compose.yml` já define valores padrão compatíveis com a configuração de desenvolvimento.
+
+## 🧑‍💻 Execução em desenvolvimento (Docker + Air)
+
+O ambiente de desenvolvimento usa `Dockerfile.dev` que instala o `air` para hot-reload. Para iniciar a API e o banco em desenvolvimento:
+
+```bash
+docker compose up --build
+```
+
+O serviço backend fica exposto em `http://localhost:5567` (padrão definido no `docker-compose.yml`). O container backend monta o código-fonte, então alterações em `.go` reiniciam automaticamente a aplicação via `air`.
+
+## 🗄️ Migrations / Aplicar arquivos SQL
+
+O projeto mantém scripts SQL em `src/infra/database/`. Existem duas abordagens para aplicar o esquema:
+
+1. Usar uma ferramenta de migrations (recomendado): instale `golang-migrate` e aponte para a pasta de migrations.
+
+2. Aplicar os arquivos SQL diretamente no container Postgres. Exemplo (aplica `Feedback.sql`):
+
+```bash
+# copia o arquivo para o container
+docker cp src/infra/database/Feedback.sql feedmaker_db:/tmp/Feedback.sql
+
+# executa o arquivo dentro do container
+docker compose exec db psql -U admin -d feedmaker_db -f /tmp/Feedback.sql
+```
+
+Se preferir, instale `psql` localmente e rode:
+
+```bash
+psql postgresql://admin:admin@localhost:5432/feedmaker_db -f src/infra/database/Feedback.sql
+```
+
+## 🧾 Observações sobre o banco (GORM)
+
+- A aplicação usa GORM como ORM (`gorm.io/gorm`, `gorm.io/driver/postgres`).
+- Alguns modelos definem `TableName()` para forçar nomes de tabela no singular (por exemplo `user` e `feedback`).
+
+---
+
 ## 📚 Documentação da API
 
 ### Base URL
