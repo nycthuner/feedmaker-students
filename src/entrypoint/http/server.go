@@ -60,7 +60,7 @@ func (server *Server) corsConfig() {
 	})
 
 	origins := handlers.AllowedOrigins([]string{
-		"localhost",
+		"http://localhost:5173",
 	})
 
 	methods := handlers.AllowedMethods([]string{
